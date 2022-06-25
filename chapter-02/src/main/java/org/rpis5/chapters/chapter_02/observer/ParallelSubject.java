@@ -12,11 +12,9 @@ public class ParallelSubject implements Subject<String> {
    public void registerObserver(Observer<String> observer) {
       observers.add(observer);
    }
-
    public void unregisterObserver(Observer<String> observer) {
       observers.remove(observer);
    }
-
    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
    public void notifyObservers(String event) {

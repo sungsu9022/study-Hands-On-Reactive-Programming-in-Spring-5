@@ -10,11 +10,9 @@ public class ConcreteSubject implements Subject<String> {
    public void registerObserver(Observer<String> observer) {
       observers.add(observer);
    }
-
    public void unregisterObserver(Observer<String> observer) {
       observers.remove(observer);
    }
-
    public void notifyObservers(String event) {
       observers.forEach(observer -> observer.observe(event));
    }

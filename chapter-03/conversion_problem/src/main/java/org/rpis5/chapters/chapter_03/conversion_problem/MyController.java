@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class MyController {
 	private final List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 
@@ -30,6 +33,8 @@ public class MyController {
 	public ListenableFuture<?> requestData() {
 		AsyncRestTemplate httpClient = new AsyncRestTemplate();
 		AsyncDatabaseClient databaseClient = new FakeAsyncDatabaseClient();
+
+		log.info("1. mapping start");
 
 		CompletionStage<String> completionStage = AsyncAdapters.toCompletion(httpClient.execute(
 			"http://localhost:8080/hello",
