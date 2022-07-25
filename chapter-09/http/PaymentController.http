@@ -1,0 +1,18 @@
+### get payments
+GET /payments/
+Host: localhost:8080
+
+
+### get payments2
+GET /payments/4bf73d0c-7edf-4736-902d-e67ea39cc55b
+Host: localhost:8080
+
+### post payments
+POST /payments/
+Host: localhost:8080
+Content-Type: application/json
+cookie: SESSION=e6a33d73-f4ca-4083-9d70-1e2598f962c5;
+Cache-Control: no-cache
+Connection: keep-alive
+
+{"id":"4bf73d0c-7edf-4736-902d-e67ea39cc55b","user":"admin"}

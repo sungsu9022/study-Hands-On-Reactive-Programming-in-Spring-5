@@ -1,20 +1,25 @@
 package org.rpis5.chapters.chapter_09;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
+	Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
-	private final PaymentService paymentService;
+	private final DefaultPaymentService paymentService;
 
-	public PaymentController(PaymentService service) {
+	public PaymentController(DefaultPaymentService service) {
 		paymentService = service;
 	}
 
@@ -23,8 +28,14 @@ public class PaymentController {
 		return paymentService.list();
 	}
 
+	@GetMapping("/{id}")
+	public Flux<Payment> list(@PathVariable String id) {
+		return paymentService.list(id);
+	}
+
 	@PostMapping("")
-	public Mono<String> send(Mono<Payment> payment) {
-		return paymentService.send(payment);
+	public Mono<String> send(@RequestBody Payment payment) {
+		logger.info("send : {}", payment);
+		return paymentService.send(Mono.just(payment));
 	}
 }

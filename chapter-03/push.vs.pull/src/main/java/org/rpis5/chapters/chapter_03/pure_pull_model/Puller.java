@@ -19,10 +19,7 @@ public class Puller {
 		return result;
 	}
 
-	void pull(String elementId,
-			Queue<Item> queue,
-			CompletableFuture resultFuture,
-			int count) {
+	void pull(String elementId, Queue<Item> queue, CompletableFuture resultFuture, int count) {
 		dbClient.getNextAfterId(elementId)
 		        .thenAccept(item -> {
 			        if (isValid(item)) {

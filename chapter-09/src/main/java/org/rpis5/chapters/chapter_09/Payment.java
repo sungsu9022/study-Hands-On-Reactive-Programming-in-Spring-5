@@ -1,15 +1,18 @@
 package org.rpis5.chapters.chapter_09;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Document
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Payment {
 	@Id String id;
 	String user;
