@@ -34,6 +34,7 @@ public class SecurityConfiguration {
 				.authorizeExchange()
 				.anyExchange().permitAll()
 				.and()
+				.csrf().disable()
 				.formLogin();
 		return http.build();
 	}

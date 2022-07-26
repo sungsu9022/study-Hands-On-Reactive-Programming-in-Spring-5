@@ -34,8 +34,20 @@ public class PaymentController {
 	}
 
 	@PostMapping("")
-	public Mono<String> send(@RequestBody Payment payment) {
+	public Mono<String> send(Mono<Payment> payment) {
 		logger.info("send : {}", payment);
-		return paymentService.send(Mono.just(payment));
+		return paymentService.send(payment);
+	}
+
+	@PostMapping("/v2")
+	public Mono<String> sendV2(@RequestBody Payment payment) {
+		logger.info("send : {}", payment);
+		return paymentService.sendWithoutContext(Mono.just(payment));
+	}
+
+	@PostMapping("/submit")
+	public Mono<String> submit(@RequestBody Payment payment) {
+		logger.info("submit : {}", payment);
+		return Mono.just(payment.id);
 	}
 }

@@ -22,7 +22,7 @@ public class DefaultPaymentService implements PaymentService {
 	public DefaultPaymentService(PaymentRepository repository,
 			                     WebClient.Builder builder) {
 		paymentRepository = repository;
-		client = builder.baseUrl("http://api.bank.com/submit")
+		client = builder.baseUrl("http://localhost:8080")
 		                .build();
 	}
 
@@ -34,7 +34,7 @@ public class DefaultPaymentService implements PaymentService {
 					  )
 		              .flatMap(p -> {
 						  logger.info("{}", p );
-						  return client.post()
+						  return client.post().uri("/payments/submit")
 							  .syncBody(p)
 							  .retrieve()
 							  .bodyToMono(String.class)
@@ -44,12 +44,17 @@ public class DefaultPaymentService implements PaymentService {
 	}
 
 	public Mono<String> sendWithoutContext(Mono<Payment> payment) {
-		return client.post()
-			.syncBody(payment)
-			.retrieve()
-			.bodyToMono(String.class)
-			.then(paymentRepository.save(payment.block()))
-			.map(Payment::getId);
+		return payment.doOnNext(p -> {
+			logger.info("next : {}", p );
+			client.post()
+				.uri("/payments/submit")
+				.syncBody(p)
+				.retrieve()
+				.bodyToMono(String.class)
+				.log()
+				.then(paymentRepository.save(p));
+		})
+		.map(Payment::getId);
 	}
 
 	@Override
